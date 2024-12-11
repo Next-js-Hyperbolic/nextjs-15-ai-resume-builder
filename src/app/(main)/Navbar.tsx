@@ -6,6 +6,7 @@ import Link from "next/link";
 import Logo from "@/assets/logo.png";
 import { UserButton } from "@clerk/nextjs";
 import { CreditCardIcon } from "lucide-react";
+import { ModeToggle } from "@/components/ModeToggle";
 
 export default function Navbar() {
   return (
@@ -23,24 +24,27 @@ export default function Navbar() {
             AI Resume Blaster
           </span>
         </Link>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: {
-                width: 35,
-                height: 35,
+        <div className="flex items-center gap-3">
+          <ModeToggle />
+          <UserButton
+            appearance={{
+              elements: {
+                avatarBox: {
+                  width: 35,
+                  height: 35,
+                },
               },
-            },
-          }}
-        >
-          <UserButton.MenuItems>
-            <UserButton.Link
-              label="Billing"
-              labelIcon={<CreditCardIcon className="size-4" />}
-              href="/billing"
-            />
-          </UserButton.MenuItems>
-        </UserButton>
+            }}
+          >
+            <UserButton.MenuItems>
+              <UserButton.Link
+                label="Billing"
+                labelIcon={<CreditCardIcon className="size-4" />}
+                href="/billing"
+              />
+            </UserButton.MenuItems>
+          </UserButton>
+        </div>
       </div>
     </header>
   );
