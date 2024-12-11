@@ -1,7 +1,11 @@
+// Required to fix 7 clerk errors pertaining to the UserButton component
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/assets/logo.png";
 import { UserButton } from "@clerk/nextjs";
+import { CreditCardIcon } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -28,7 +32,15 @@ export default function Navbar() {
               },
             },
           }}
-        />
+        >
+          <UserButton.MenuItems>
+            <UserButton.Link
+              label="Billing"
+              labelIcon={<CreditCardIcon className="size-4" />}
+              href="/billing"
+            />
+          </UserButton.MenuItems>
+        </UserButton>
       </div>
     </header>
   );
