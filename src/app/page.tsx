@@ -1,9 +1,29 @@
-import Image from "next/image";
-
-export default function Home() {
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+import "./globals.css";
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="">
-      <h1>Hello world</h1>
-    </div>
+    <ClerkProvider>
+      <html lang="en">
+        <body>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
