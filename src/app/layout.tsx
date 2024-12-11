@@ -8,6 +8,7 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/nextjs";
+import Navbar from "./(main)/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
