@@ -21,6 +21,7 @@ export const personalInfoSchema = z.object({
     lastName: optionalString,
     jobTitle: optionalString,
     city: optionalString,
+    state: optionalString,
     country: optionalString,
     phone: optionalString,
     email: optionalString,
