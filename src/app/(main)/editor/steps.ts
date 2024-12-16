@@ -13,7 +13,7 @@ export const steps: {
  }[] = [
       {title: "General Info", component: GeneralInfoForm, key: "general-info"},
       {title: "Personal Info", component: PersonalInfoForm, key: "personal-info"},
-      {title: "WorkExperience", component: WorkExperienceForm, key: "work-experience"},
+      {title: "Work Experience", component: WorkExperienceForm, key: "work-experience"},
       {title: "Education", component: EducationForm, key: "education"},
       {title: "Skills", component: SkillsForm, key: "skills"},
       {title: "Summary", component: SummaryForm, key: "summary"},
