@@ -22,7 +22,7 @@ export default function ColorPicker({ color, onChange }: ColorPickerProps) {
         <Button
           variant="outline"
           size="icon"
-          title="Change resume color"
+          title="Change resume colors"
           onClick={() => setShowPopover(true)}
         >
           <PaletteIcon className="size-5" />
