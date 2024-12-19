@@ -34,7 +34,7 @@ model Resume {
   phone       String?
   email       String?
 
-  workExpereinces WorkExperience[]
+  workExperiences WorkExperience[]
   educations      Education[]
   skills          String[]
 
