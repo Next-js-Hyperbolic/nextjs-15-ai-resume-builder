@@ -29,6 +29,7 @@ model Resume {
   lastName    String?
   jobTitle    String?
   city        String?
+  state       String?
   country     String?
   phone       String?
   email       String?
