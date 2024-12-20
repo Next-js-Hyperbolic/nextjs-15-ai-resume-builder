@@ -80,3 +80,14 @@ export type ResumeTypes = Omit<z.infer<typeof resumeSchema>, "photo"> & {
     id?: string
     photo?: File | string | null
 }
+
+
+// OPEN AI
+export const generateSummarySchema = z.object({
+    jobTitle: optionalString,
+    ...workExperienceSchema.shape,
+    ...educationSchema.shape,
+    ...skillsSchema.shape,
+})
+
+export type GenerateSummaryTypes = z.infer<typeof generateSummarySchema>

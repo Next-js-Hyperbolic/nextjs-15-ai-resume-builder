@@ -187,7 +187,7 @@ function EducationSection({ resumeData }: ResumeSectionProps) {
       <hr className="border-2 opacity-20" style={{ borderColor: colorHex }} />
       <div className="space-y-3">
         <p className="text-lg font-semibold" style={{ color: colorHex }}>
-          Work Experience
+          Education
         </p>
         {nonEmptyEducations?.map((edu, index) => (
           <div key={index} className="break-inside-avoid">
