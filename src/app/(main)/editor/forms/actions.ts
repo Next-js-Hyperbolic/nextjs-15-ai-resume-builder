@@ -95,6 +95,8 @@ export async function generateWorkExperience(
         throw new Error("Failed to generate ai Work Experience");
     }
 
+    console.log(`aiResponse`, aiResponse)
+
     return {
         position: aiResponse.match(/Job title: (.*)/)?.[1] || "",
         company: aiResponse.match(/Company: (.*)/)?.[1] || "",
