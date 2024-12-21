@@ -41,6 +41,8 @@ export const workExperienceSchema = z.object({
 
 export type WorkExperienceTypes = z.infer<typeof workExperienceSchema>
 
+export type WorkExperience = NonNullable<z.infer<typeof workExperienceSchema>['workExperiences']>[number]
+
 export const educationSchema = z.object({
     educations: z.array(z.object({
         degree: optionalString,
@@ -83,6 +85,12 @@ export type ResumeTypes = Omit<z.infer<typeof resumeSchema>, "photo"> & {
 
 
 // OPEN AI
+export const generateWorkExperienceSchema = z.object({
+    description: z.string().trim().min(1, "Description required.").min(20, "Must be at least 20 characters long."),
+})
+
+export type GenerateWorkExperienceTypes = z.infer<typeof generateWorkExperienceSchema>
+
 export const generateSummarySchema = z.object({
     jobTitle: optionalString,
     ...workExperienceSchema.shape,
