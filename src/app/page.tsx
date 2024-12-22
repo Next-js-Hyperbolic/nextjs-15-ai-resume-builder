@@ -21,18 +21,22 @@ export default function RootLayout({
           className="mx-auto md:ms-0"
         />
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-          Create a{" "}
+          Create the{" "}
           <span className="inline-block bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
             Perfect Resume
           </span>{" "}
           in Minutes.
         </h1>
         <p className="text-lg text-gray-500">
-          More companies are using AI to review your resume every day. <br />
-          Use AI to create tailored resumes for each job in minutes.
+          Companies are using AI to review your resume. <br />
+          Use AI to create a resume it&apos;ll{" "}
+          <span className="italic">love</span>.
         </p>
+        <hr className="pb-5" />
         <Button asChild size="lg" variant="premium">
-          <Link href="/resumes">Get Started</Link>
+          <Link href="/resumes">
+            <p className="font-bold">Get Started</p>
+          </Link>
         </Button>
       </div>
       <div>
