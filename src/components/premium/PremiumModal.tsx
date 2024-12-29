@@ -4,6 +4,9 @@ import { Check } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import usePremiumModal from "@/hooks/usePremiumModal";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { createCheckoutSession } from "./actions";
 
 const premiumFeatures = [
   "AI tools",
@@ -19,8 +22,35 @@ const premiumPlusFeatures = ["All Premium Features", "Unlimited resumes"];
 export default function PremiumModal() {
   const { isOpen, setOpen } = usePremiumModal();
 
+  const { toast } = useToast();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handlePremiumClick(priceId: string) {
+    try {
+      setIsLoading(true);
+      const redirectUrl = await createCheckoutSession(priceId);
+      window.location.href = redirectUrl;
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Something went wrong while trying to get premium. Please try again later.`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        if (!isLoading) {
+          setOpen(isOpen);
+        }
+      }}
+    >
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Resume Builder AI Premium</DialogTitle>
@@ -38,7 +68,16 @@ export default function PremiumModal() {
                   </li>
                 ))}
               </ul>
-              <Button>Get Premium</Button>
+              <Button
+                onClick={() =>
+                  handlePremiumClick(
+                    process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY!,
+                  )
+                }
+                disabled={isLoading}
+              >
+                Get Premium
+              </Button>
             </div>
             <div className="border-1 mx-6" />
             <div className="flex w-1/2 flex-col justify-between space-y-5">
@@ -56,7 +95,17 @@ export default function PremiumModal() {
                 </ul>
               </div>
 
-              <Button variant="premium">Get Premium Plus</Button>
+              <Button
+                variant="premium"
+                onClick={() =>
+                  handlePremiumClick(
+                    process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_PLUS_MONTHLY!,
+                  )
+                }
+                disabled={isLoading}
+              >
+                Get Premium Plus
+              </Button>
             </div>
           </div>
         </div>
