@@ -1,5 +1,6 @@
 "use server"
 
+import { env } from "@/env";
 import stripe from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs/server"
 
@@ -18,8 +19,8 @@ export async function createCheckoutSession(priceId: string) {
             },
         ],
         mode: "subscription",
-        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/billing/success`,
-        cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/billing`,
+        success_url: `${env.NEXT_PUBLIC_BASE_URL}/billing/success`,
+        cancel_url: `${env.NEXT_PUBLIC_BASE_URL}/billing`,
         customer_email: user.emailAddresses[0].emailAddress,
         // Attach user data to checkout session
         subscription_data: {
@@ -29,7 +30,7 @@ export async function createCheckoutSession(priceId: string) {
         },
         custom_text: {
             terms_of_service_acceptance: {
-                message: `By clicking "Subscribe", you agree to our (AI Resume Builder) [Terms of Service](${process.env.NEXT_PUBLIC_BASE_URL}/tos).`,
+                message: `By clicking "Subscribe", you agree to our (AI Resume Builder) [Terms of Service](${env.NEXT_PUBLIC_BASE_URL}/tos).`,
             }
         },
         consent_collection: {
