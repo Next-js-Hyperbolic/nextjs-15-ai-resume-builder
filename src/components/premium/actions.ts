@@ -11,6 +11,8 @@ export async function createCheckoutSession(priceId: string) {
         throw new Error("You must be signed in to create a checkout session");
     }
 
+    const stripeCustomerId = user.privateMetadata?.stripeCustomerId as string | undefined;
+
     const session = await stripe.checkout.sessions.create({
         line_items: [
             {
@@ -21,8 +23,12 @@ export async function createCheckoutSession(priceId: string) {
         mode: "subscription",
         success_url: `${env.NEXT_PUBLIC_BASE_URL}/billing/success`,
         cancel_url: `${env.NEXT_PUBLIC_BASE_URL}/billing`,
-        customer_email: user.emailAddresses[0].emailAddress,
+        customer: stripeCustomerId,
+        customer_email: stripeCustomerId ? undefined : user.emailAddresses[0].emailAddress,
         // Attach user data to checkout session
+        metadata: {
+            userId: user.id,
+        },
         subscription_data: {
             metadata: {
                 userId: user.id,
