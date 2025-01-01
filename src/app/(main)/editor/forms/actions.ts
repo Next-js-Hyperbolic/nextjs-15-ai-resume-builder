@@ -1,7 +1,10 @@
 "use server"
 
 import openai from "@/lib/openai";
+import { canUseAITools } from "@/lib/permissions";
+import { getUserSubscriptionLevel } from "@/lib/subscription";
 import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSchema, GenerateWorkExperienceTypes, WorkExperienceTypes, WorkExperience } from "@/lib/validation";
+import { auth } from "@clerk/nextjs/server";
 
 /**
  * Generates a professional resume summary from OpenAI API based on the provided input.
@@ -10,7 +13,16 @@ import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSche
  * @returns {Promise<void>} A promise that resolves when the summary generation is complete.
  */
 export async function generateSummary(input: GenerateSummaryTypes) {
-    // TODO: Block for non-premium users
+    const {userId} = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+    if (!canUseAITools(subscriptionLevel)) {
+        throw new Error("You do not have permission to use AI tools. Please upgrade your subscription.")
+    }
 
     const {jobTitle, workExperiences, educations, skills} = generateSummarySchema.parse(input);
 
@@ -64,6 +76,17 @@ export async function generateSummary(input: GenerateSummaryTypes) {
 export async function generateWorkExperience(
     input: GenerateWorkExperienceTypes
 ) {
+    const {userId} = await auth();
+    if (!userId) {
+        throw new Error("Unauthorized");
+    }
+
+    const subscriptionLevel = await getUserSubscriptionLevel(userId);
+
+    if (!canUseAITools(subscriptionLevel)) {
+        throw new Error("You do not have permission to use AI tools. Please upgrade your subscription.")
+    }
+    
     const {description} = generateWorkExperienceSchema.parse(input);
 
     const systemMessage = `
