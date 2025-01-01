@@ -4,6 +4,9 @@ import { ResumeTypes } from "@/lib/validation";
 import { WandSparklesIcon } from "lucide-react";
 import { useState } from "react";
 import { generateSummary } from "./actions";
+import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
+import usePremiumModal from "@/hooks/usePremiumModal";
+import { canUseAITools } from "@/lib/permissions";
 
 interface GenerateSummaryButtonProps {
   resumeData: ResumeTypes;
@@ -17,8 +20,14 @@ export default function GenerateSummaryButton({
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
+  const subscriptionLevel = useSubscriptionLevel();
+  const premiumModal = usePremiumModal();
+
   async function handleClick() {
-    // TODO: Block for non-premium users
+    if (!canUseAITools(subscriptionLevel)) {
+      premiumModal.setOpen(true);
+      return;
+    }
     try {
       setLoading(true);
       const aiResponse = await generateSummary(resumeData);

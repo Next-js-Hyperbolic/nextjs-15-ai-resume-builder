@@ -5,6 +5,8 @@ import { canUseAITools } from "@/lib/permissions";
 import { getUserSubscriptionLevel } from "@/lib/subscription";
 import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSchema, GenerateWorkExperienceTypes, WorkExperienceTypes, WorkExperience } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
+import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
+import usePremiumModal from "@/hooks/usePremiumModal";
 
 /**
  * Generates a professional resume summary from OpenAI API based on the provided input.
