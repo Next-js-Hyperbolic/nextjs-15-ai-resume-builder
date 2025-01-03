@@ -33,6 +33,7 @@ export default function PremiumModal() {
       const redirectUrl = await createCheckoutSession(priceId);
       window.location.href = redirectUrl;
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: `Something went wrong while trying to get premium. Please try again later.`,

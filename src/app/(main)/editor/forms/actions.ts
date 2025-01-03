@@ -3,7 +3,7 @@
 import openai from "@/lib/openai";
 import { canUseAITools } from "@/lib/permissions";
 import { getUserSubscriptionLevel } from "@/lib/subscription";
-import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSchema, GenerateWorkExperienceTypes, WorkExperienceTypes, WorkExperience } from "@/lib/validation";
+import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSchema, GenerateWorkExperienceTypes, WorkExperience } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
 
 /**
