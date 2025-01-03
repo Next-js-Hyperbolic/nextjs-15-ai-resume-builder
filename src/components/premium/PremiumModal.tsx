@@ -5,9 +5,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import usePremiumModal from "@/hooks/usePremiumModal";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { use, useState } from "react";
 import { createCheckoutSession } from "./actions";
 import { env } from "@/env";
+import { useSubscriptionLevel } from "@/app/(main)/SubscriptionLevelProvider";
 
 const premiumFeatures = [
   "AI tools",
@@ -22,10 +23,9 @@ const premiumPlusFeatures = ["All Premium Features", "Unlimited resumes"];
 
 export default function PremiumModal() {
   const { isOpen, setOpen } = usePremiumModal();
-
   const { toast } = useToast();
-
   const [isLoading, setIsLoading] = useState(false);
+  const subscriptionLevel = useSubscriptionLevel();
 
   async function handlePremiumClick(priceId: string) {
     try {
@@ -75,9 +75,11 @@ export default function PremiumModal() {
                     env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_MONTHLY!,
                   )
                 }
-                disabled={isLoading}
+                disabled={isLoading || subscriptionLevel === "pro"}
               >
-                Get Premium
+                {subscriptionLevel === "pro"
+                  ? "Currently Active"
+                  : "Get Premium"}
               </Button>
             </div>
             <div className="border-1 mx-6" />

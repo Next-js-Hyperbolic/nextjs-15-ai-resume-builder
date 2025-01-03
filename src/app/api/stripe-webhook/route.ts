@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import prisma from "@/lib/prisma";
 import stripe from "@/lib/stripe";
 import { clerkClient } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
@@ -53,12 +54,42 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     })
 }
 
-async function handleSubscriptionCreatedOrUpdated(subscription: string) {
+async function handleSubscriptionCreatedOrUpdated(subscriptionId: string) {
     // Handle subscription created or updated event
     console.log(`handleSubscriptionCreatedOrUpdated`)
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+    if (subscription.status === "active" || subscription.status === "trialing" || subscription.status === "past_due") {
+
+        // Upsert will call both create and update which is optimal based on Stripe events coming in asynchronously and potentially out of order.
+        await prisma.userSubscription.upsert({
+            where: { 
+                userId: subscription.metadata?.userId as string,
+            },
+            create: {
+                userId: subscription.metadata?.userId as string,
+                stripeSubscriptionId: subscription.id,
+                stripeCustomerId: subscription.customer as string,
+                stripePriceId: subscription.items.data[0].price.id,
+                stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
+                stripeCancelAtPeriodEnd: subscription.cancel_at_period_end,
+            },
+            update: {
+                stripePriceId: subscription.items.data[0].price.id,
+                stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
+                stripeCancelAtPeriodEnd: subscription.cancel_at_period_end,
+            }
+        })
+
+    } else {
+        // Use deleteMany to delete all subscriptions for a user without throwing an error if none exists like delete would.
+        prisma.userSubscription.deleteMany({ where: {stripeCustomerId: subscription.customer as string} })
+    }
 }
 
-async function handleSubscriptionDeleted(stripe: Stripe.Subscription) {
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
     // Handle subscription deleted event
     console.log(`handleSubscriptionDeleted`)
+    prisma.userSubscription.deleteMany({ where: {stripeCustomerId: subscription.customer as string} })
+
 } 
