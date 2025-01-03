@@ -1,5 +1,4 @@
 import ResumePreview from "@/components/ResumePreview";
-import { EditorFormProps } from "@/lib/types";
 import { ResumeTypes } from "@/lib/validation";
 import ColorPicker from "./ColorPicker";
 import BorderStyleButton from "./BorderStyleButton";

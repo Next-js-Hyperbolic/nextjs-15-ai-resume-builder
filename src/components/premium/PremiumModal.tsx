@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import usePremiumModal from "@/hooks/usePremiumModal";
 import { useToast } from "@/hooks/use-toast";
-import { use, useState } from "react";
+import { useState } from "react";
 import { createCheckoutSession } from "./actions";
 import { env } from "@/env";
 import { useSubscriptionLevel } from "@/app/(main)/SubscriptionLevelProvider";

@@ -6,7 +6,6 @@ import { getUserSubscriptionLevel } from "@/lib/subscription";
 import { resumeSchema, ResumeTypes } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
 import {del, put} from "@vercel/blob"
-import exp from "constants";
 import path from "path";
 
 export async function saveResume(values: ResumeTypes) {

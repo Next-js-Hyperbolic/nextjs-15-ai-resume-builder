@@ -5,8 +5,6 @@ import { canUseAITools } from "@/lib/permissions";
 import { getUserSubscriptionLevel } from "@/lib/subscription";
 import { generateSummarySchema, GenerateSummaryTypes, generateWorkExperienceSchema, GenerateWorkExperienceTypes, WorkExperienceTypes, WorkExperience } from "@/lib/validation";
 import { auth } from "@clerk/nextjs/server";
-import { useSubscriptionLevel } from "../../SubscriptionLevelProvider";
-import usePremiumModal from "@/hooks/usePremiumModal";
 
 /**
  * Generates a professional resume summary from OpenAI API based on the provided input.
@@ -54,9 +52,6 @@ export async function generateSummary(input: GenerateSummaryTypes) {
         Skills: 
             ${skills}
     `
-
-    console.log(`systemMessage`, systemMessage)
-    console.log(`userMessage`, userMessage)
 
     const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
