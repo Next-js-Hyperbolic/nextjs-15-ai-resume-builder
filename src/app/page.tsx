@@ -5,11 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import resumePreview from "@/assets/resume-preview-2.jpg";
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-6 bg-gray-100 px-5 py-12 text-center text-gray-900 md:flex-row md:text-start lg:gap-12">
       <div className="max-w-prose space-y-3">
