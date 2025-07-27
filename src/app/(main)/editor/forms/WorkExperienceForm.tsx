@@ -13,7 +13,7 @@ import { EditorFormProps } from "@/lib/types";
 import { workExperienceSchema, WorkExperienceTypes } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GripHorizontal } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm, UseFormReturn } from "react-hook-form";
 import {
   closestCenter,
@@ -35,6 +35,21 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 import GenerateWorkExperienceButton from "./GenerateWorkExperienceButton";
+
+// Client-only wrapper to prevent hydration errors
+function ClientOnlyDndContext({ children }: { children: React.ReactNode }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return <div className="space-y-3">{children}</div>;
+  }
+
+  return <>{children}</>;
+}
 
 export function WorkExperienceForm({
   resumeData,
@@ -96,27 +111,29 @@ export function WorkExperienceForm({
       </div>
       <Form {...form}>
         <form className="space-y-3">
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-            modifiers={[restrictToVerticalAxis]}
-          >
-            <SortableContext
-              items={fields}
-              strategy={verticalListSortingStrategy}
+          <ClientOnlyDndContext>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+              modifiers={[restrictToVerticalAxis]}
             >
-              {fields.map((field, index) => (
-                <WorkExperienceItem
-                  key={field.id}
-                  index={index}
-                  id={field.id}
-                  form={form}
-                  remove={remove}
-                />
-              ))}
-            </SortableContext>
-          </DndContext>
+              <SortableContext
+                items={fields}
+                strategy={verticalListSortingStrategy}
+              >
+                {fields.map((field, index) => (
+                  <WorkExperienceItem
+                    key={field.id}
+                    index={index}
+                    id={field.id}
+                    form={form}
+                    remove={remove}
+                  />
+                ))}
+              </SortableContext>
+            </DndContext>
+          </ClientOnlyDndContext>
 
           <div className="flex justify-center">
             <Button

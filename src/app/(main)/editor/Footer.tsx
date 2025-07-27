@@ -27,6 +27,8 @@ export function Footer({
     (_, index) => steps[index - 1]?.key === currentStep,
   )?.key;
 
+  const isLastStep = currentStep === steps[steps.length - 1].key;
+
   return (
     <footer className="w-full border-t px-3 py-5">
       <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3">
@@ -40,12 +42,18 @@ export function Footer({
           >
             Previous step
           </Button>
-          <Button
-            onClick={nextStep ? () => setCurrentStep(nextStep) : undefined}
-            disabled={!nextStep}
-          >
-            Next step
-          </Button>
+          {isLastStep ? (
+            <Button asChild>
+              <Link href="/resumes">Finish Resume</Link>
+            </Button>
+          ) : (
+            <Button
+              onClick={nextStep ? () => setCurrentStep(nextStep) : undefined}
+              disabled={!nextStep}
+            >
+              Next step
+            </Button>
+          )}
         </div>
         <Button
           variant="outline"
